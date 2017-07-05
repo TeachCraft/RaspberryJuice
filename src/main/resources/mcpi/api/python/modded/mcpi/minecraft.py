@@ -16,7 +16,7 @@ from util import flatten
      entityId, by injecting [] that flattens to nothing)
 
     @author: Aron Nieminen, Mojang AB
-    
+
     Updated to included additional functionality provided by RaspberryJuice:
     - getBlocks() : implemented
     - .create() : can now accept "name" (player name) for use in multiplayer
@@ -25,6 +25,7 @@ from util import flatten
     - CmdPositioner.getRotation
     - getPlayerEntityId
     - CmdEvents.pollChatPosts
+    - CmdEvents.pollProjectileHits
     """
 
 
@@ -134,6 +135,12 @@ class CmdEvents:
     def pollBlockHits(self):
         """Only triggered by sword => [BlockEvent]"""
         s = self.conn.sendReceive("events.block.hits")
+        events = [e for e in s.split("|") if e]
+        return [BlockEvent.Hit(*map(int, e.split(","))) for e in events]
+
+    def pollProjectileHits(self):
+        """Only triggered by projectiles => [BlockEvent]"""
+        s = self.conn.sendReceive("events.projectile.hits")
         events = [e for e in s.split("|") if e]
         return [BlockEvent.Hit(*map(int, e.split(","))) for e in events]
 

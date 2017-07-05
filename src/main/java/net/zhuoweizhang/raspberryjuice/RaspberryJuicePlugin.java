@@ -11,15 +11,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 
 	public static final Set<Material> blockBreakDetectionTools = EnumSet.of(
 			Material.DIAMOND_SWORD,
-			Material.GOLD_SWORD, 
-			Material.IRON_SWORD, 
-			Material.STONE_SWORD, 
+			Material.GOLD_SWORD,
+			Material.IRON_SWORD,
+			Material.STONE_SWORD,
 			Material.WOOD_SWORD);
 
 	public ServerListenerThread serverThread;
@@ -33,10 +35,10 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         //get port from config.yml
 		int port = this.getConfig().getInt("port");
-        
+
         //setup session array
 		sessions = new ArrayList<RemoteSession>();
-		
+
 		//create new tcp listener thread
 		try {
 			serverThread = new ServerListenerThread(this, new InetSocketAddress(port));
@@ -64,7 +66,22 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 			session.queuePlayerInteractEvent(event);
 		}
 	}
-	
+
+	@EventHandler(ignoreCancelled=true)
+	public void onProjectileHit(ProjectileHitEvent event) {
+		//getLogger().info("Chat event fired");
+		/*
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		ItemStack currentTool = event.getPlayer().getItemInHand();
+		if (currentTool == null || !blockBreakDetectionTools.contains(currentTool.getType())) {
+			return;
+		}
+		*/
+		for (RemoteSession session: sessions) {
+			session.queueProjectileHitEvent(event);
+		}
+	}
+
 	@EventHandler(ignoreCancelled=true)
 	public void onChatPosted(AsyncPlayerChatEvent event) {
 		//debug
@@ -103,7 +120,7 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 		}
 		return null;
 	}
-	
+
 	//get entity by id - TODO to be compatible with the pi it should be changed to return an entity not a player...
 	public Player getEntity(int id) {
 		for (Player p: getServer().getOnlinePlayers()) {
@@ -137,7 +154,7 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		sessions = null;
 		serverThread = null;
 		getLogger().info("Raspberry Juice Stopped");
@@ -158,4 +175,3 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 		}
 	}
 }
-

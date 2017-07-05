@@ -42,4 +42,3 @@ class ChatEvent:
     @staticmethod
     def Post(entityId, message):
         return ChatEvent(ChatEvent.POST, entityId, message)
-
