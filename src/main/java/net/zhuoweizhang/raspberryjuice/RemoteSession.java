@@ -9,7 +9,7 @@ import org.bukkit.entity.*;
 import org.bukkit.block.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class RemoteSession {
 
@@ -39,7 +39,7 @@ public class RemoteSession {
 
 	protected ArrayDeque<AsyncPlayerChatEvent> chatPostedQueue = new ArrayDeque<AsyncPlayerChatEvent>();
 
-	protected ArrayDeque<ProjectileHitEvent> projectileHitQueue = new ArrayDeque<ProjectileHitEvent>();
+	protected ArrayDeque<EntityDamageByEntityEvent> projectileHitQueue = new ArrayDeque<EntityDamageByEntityEvent>();
 
 	private int maxCommandsPerTick = 9000;
 
@@ -93,7 +93,7 @@ public class RemoteSession {
 		chatPostedQueue.add(event);
 	}
 
-	public void queueProjectileHitEvent(ProjectileHitEvent event) {
+	public void queueProjectileHitEvent(EntityDamageByEntityEvent event) {
 		//plugin.getLogger().info(event.toString());
 		projectileHitQueue.add(event);
 	}
@@ -205,25 +205,23 @@ public class RemoteSession {
 			// events.projectile.hits
 			} else if (c.equals("events.projectile.hits")) {
 				StringBuilder b = new StringBuilder();
-		 		ProjectileHitEvent event;
+		 		EntityDamageByEntityEvent event;
 				while ((event = projectileHitQueue.poll()) != null) {
-					/*
-					b.append(event.getPlayer().getEntityId());
-					b.append(",");
-					b.append(event.getMessage());
-					if (chatPostedQueue.size() > 0) {
-						b.append("|");
-					}
-					*/
-					Block block = event.getHitBlock();
-					Location loc = block.getLocation();
-					b.append(blockLocationToRelative(loc));
-					b.append(",");
-					b.append(1); //blockFaceToNotch(event.getBlockFace()), but don't really care
-					b.append(",");
-					b.append(event.getEntity().getShooter().getEntityId());
-					if (projectileHitQueue.size() > 0) {
-						b.append("|");
+					Arrow arrow = (Arrow) event.getDamager();
+					if (arrow.getShooter() instanceof Player) {
+
+						Player damager = (Player) arrow.getShooter();
+
+						Block block = event.getEntity().getLocation().getBlock();
+						Location loc = block.getLocation();
+						b.append(blockLocationToRelative(loc));
+						b.append(",");
+						b.append(1); //blockFaceToNotch(event.getBlockFace()), but don't really care
+						b.append(",");
+						b.append(damager.getEntityId());
+						if (projectileHitQueue.size() > 0) {
+							b.append("|");
+						}
 					}
 				}
 				//DEBUG
