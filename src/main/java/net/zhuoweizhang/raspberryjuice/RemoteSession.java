@@ -39,7 +39,7 @@ public class RemoteSession {
 
 	protected ArrayDeque<PlayerInteractEvent> interactEventQueue = new ArrayDeque<PlayerInteractEvent>();
 
-	protected ArrayDeque<AsyncPlayerChatEvent> chatPostedQueue = new ArrayDeque<AsyncPlayerChatEvent>();
+	protected Map<Integer, ArrayDeque<AsyncPlayerChatEvent>> chatPostedMap = new HashMap<Integer, ArrayDeque<AsyncPlayerChatEvent>>();
 
 	protected Map<Integer, ArrayDeque<ProjectileHitEvent>> projectileHitMap = new HashMap<Integer, ArrayDeque<ProjectileHitEvent>>();
 
@@ -92,7 +92,15 @@ public class RemoteSession {
 
 	public void queueChatPostedEvent(AsyncPlayerChatEvent event) {
 		//plugin.getLogger().info(event.toString());
-		chatPostedQueue.add(event);
+
+		Integer id = event.getPlayer().getEntityId();
+
+		if (chatPostedMap.containsKey(id)) {
+			chatPostedMap.get(id).add(event);
+		} else {
+			chatPostedMap.put(id, new ArrayDeque<AsyncPlayerChatEvent>());
+			chatPostedMap.get(id).add(event);
+		}
 	}
 
 	public void queueProjectileHitEvent(ProjectileHitEvent event) {
@@ -274,14 +282,27 @@ public class RemoteSession {
 				send(b.toString());
 
 			// events.chat.posts
-			} else if (c.equals("events.chat.posts")) {
+			} else if (c.equals("player.events.chat.posts")) {
+				String name = null;
+				if (args.length > 0) {
+					name = args[0];
+				}
+				Player currentPlayer = getCurrentPlayer(name);
+				Integer playerID = currentPlayer.getEntityId();
+
+				if (chatPostedMap.containsKey(playerID)) {
+
+				} else {
+					chatPostedMap.put(playerID, new ArrayDeque<AsyncPlayerChatEvent>());
+				}
+
 				StringBuilder b = new StringBuilder();
 				AsyncPlayerChatEvent event;
-				while ((event = chatPostedQueue.poll()) != null) {
+				while ((event = chatPostedMap.get(playerID).poll()) != null) {
 					b.append(event.getPlayer().getEntityId());
 					b.append(",");
 					b.append(event.getMessage());
-					if (chatPostedQueue.size() > 0) {
+					if (chatPostedMap.get(playerID).size() > 0) {
 						b.append("|");
 					}
 				}
