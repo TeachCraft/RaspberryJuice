@@ -41,7 +41,7 @@ public class RemoteSession {
 
 	protected ArrayDeque<AsyncPlayerChatEvent> chatPostedQueue = new ArrayDeque<AsyncPlayerChatEvent>();
 
-	protected ArrayDeque<ProjectileHitEvent> projectileHitQueue = new ArrayDeque<ProjectileHitEvent>();
+	protected Map<Integer, ArrayDeque<ProjectileHitEvent>> projectileHitMap = new HashMap<Integer, ArrayDeque<ProjectileHitEvent>>();
 
 	private int maxCommandsPerTick = 9000;
 
@@ -97,7 +97,20 @@ public class RemoteSession {
 
 	public void queueProjectileHitEvent(ProjectileHitEvent event) {
 		//plugin.getLogger().info(event.toString());
-		projectileHitQueue.add(event);
+
+		Arrow arrow = (Arrow) event.getEntity();
+		if (arrow.getShooter() instanceof Player) {
+
+			Player shooter = (Player) arrow.getShooter();
+			Integer id = shooter.getEntityId();
+
+			if (projectileHitMap.containsKey(id)) {
+				projectileHitMap.get(id).add(event);
+			} else {
+				projectileHitMap.put(id, new ArrayDeque<ProjectileHitEvent>());
+				projectileHitMap.get(id).add(event);
+			}
+		}
 	}
 
 	/** called from the server main thread */
@@ -200,32 +213,41 @@ public class RemoteSession {
 
 			// events.clear
 			} else if (c.equals("events.clear")) {
-				interactEventQueue.clear();
-				chatPostedQueue.clear();
-				projectileHitQueue.clear();
+				//interactEventQueue.clear();
+				//chatPostedQueue.clear();
+				//projectileHitQueue.clear();
 
 			// events.projectile.hits
-			} else if (c.equals("events.projectile.hits")) {
+
+			} else if (c.equals("player.events.projectile.hits")) {
+				String name = null;
+				if (args.length > 0) {
+					name = args[0];
+				}
+				Player currentPlayer = getCurrentPlayer(name);
+				Integer playerID = currentPlayer.getEntityId();
+
+				if (projectileHitMap.containsKey(playerID)) {
+
+				} else {
+					projectileHitMap.put(playerID, new ArrayDeque<ProjectileHitEvent>());
+				}
 				StringBuilder b = new StringBuilder();
 		 		ProjectileHitEvent event;
-				while ((event = projectileHitQueue.poll()) != null) {
+				while ((event = projectileHitMap.get(playerID).poll()) != null) {
 					Arrow arrow = (Arrow) event.getEntity();
-					if (arrow.getShooter() instanceof Player) {
-
-						Player shooter = (Player) arrow.getShooter();
-
-						Block block = arrow.getLocation().getBlock();
-						Location loc = block.getLocation();
-						b.append(blockLocationToRelative(loc));
-						b.append(",");
-						b.append(1); //blockFaceToNotch(event.getBlockFace()), but don't really care
-						b.append(",");
-						b.append(shooter.getEntityId());
-						if (projectileHitQueue.size() > 0) {
-							b.append("|");
-						}
-						arrow.remove();
+					Player shooter = (Player) arrow.getShooter();
+					Block block = arrow.getLocation().getBlock();
+					Location loc = block.getLocation();
+					b.append(blockLocationToRelative(loc));
+					b.append(",");
+					b.append(1); //blockFaceToNotch(event.getBlockFace()), but don't really care
+					b.append(",");
+					b.append(shooter.getEntityId());
+					if (projectileHitMap.get(playerID).size() > 0) {
+						b.append("|");
 					}
+					arrow.remove();
 				}
 				//DEBUG
 				//System.out.println(b.toString());
