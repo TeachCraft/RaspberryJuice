@@ -37,7 +37,7 @@ public class RemoteSession {
 
 	public RaspberryJuicePlugin plugin;
 
-	protected ArrayDeque<PlayerInteractEvent> interactEventQueue = new ArrayDeque<PlayerInteractEvent>();
+	protected Map<Integer, ArrayDeque<PlayerInteractEvent>> interactEventMap = new HashMap<Integer, ArrayDeque<PlayerInteractEvent>>();
 
 	protected Map<Integer, ArrayDeque<AsyncPlayerChatEvent>> chatPostedMap = new HashMap<Integer, ArrayDeque<AsyncPlayerChatEvent>>();
 
@@ -87,7 +87,15 @@ public class RemoteSession {
 
 	public void queuePlayerInteractEvent(PlayerInteractEvent event) {
 		//plugin.getLogger().info(event.toString());
-		interactEventQueue.add(event);
+
+		Integer id = event.getPlayer().getEntityId();
+
+		if (interactEventMap.containsKey(id)) {
+			interactEventMap.get(id).add(event);
+		} else {
+			interactEventMap.put(id, new ArrayDeque<PlayerInteractEvent>());
+			interactEventMap.get(id).add(event);
+		}
 	}
 
 	public void queueChatPostedEvent(AsyncPlayerChatEvent event) {
@@ -262,10 +270,23 @@ public class RemoteSession {
 				send(b.toString());
 
 			// events.block.hits
-			} else if (c.equals("events.block.hits")) {
+			} else if (c.equals("player.events.block.hits")) {
+				String name = null;
+				if (args.length > 0) {
+					name = args[0];
+				}
+				Player currentPlayer = getCurrentPlayer(name);
+				Integer playerID = currentPlayer.getEntityId();
+
+				if (interactEventMap.containsKey(playerID)) {
+
+				} else {
+					interactEventMap.put(playerID, new ArrayDeque<PlayerInteractEvent>());
+				}
+
 				StringBuilder b = new StringBuilder();
 		 		PlayerInteractEvent event;
-				while ((event = interactEventQueue.poll()) != null) {
+				while ((event = interactEventMap.get(playerID).poll()) != null) {
 					Block block = event.getClickedBlock();
 					Location loc = block.getLocation();
 					b.append(blockLocationToRelative(loc));
@@ -273,7 +294,7 @@ public class RemoteSession {
 					b.append(blockFaceToNotch(event.getBlockFace()));
 					b.append(",");
 					b.append(event.getPlayer().getEntityId());
-					if (interactEventQueue.size() > 0) {
+					if (interactEventMap.get(playerID).size() > 0) {
 						b.append("|");
 					}
 				}
