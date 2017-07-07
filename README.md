@@ -6,7 +6,52 @@ A Bukkit plugin which implements the Minecraft Pi Socket API.
 
 ### Commands supported
 
- - world.get/setBlock
+<details>
+  <summary>
+mc.getBlock(x, y, z)
+  </summary>
+  <blockquote>
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+#Get the block underneath the player
+block_id_under_player = mc.getBlock(pos.x, pos.y-1, pos.z)
+grass_block_id = 2
+
+if block_id_under_player == grass_block_id:
+    print "Player is standing on grass"
+  </blockquote>
+</details>
+
+<details>
+  <summary>
+mc.setBlock(x, y, z, block_id)
+  </summary>
+  <blockquote>
+> Set the block at coordinates X/Y/Z to block_id
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+#This is the minecraft block ID of the flower block.
+#To see what other block IDs are available, go here in your browser: http://minecraft-ids.grahamedgecombe.com/
+flower_block_id = 38
+
+#Set the block underneath the player to be a flower
+mc.setBlock(pos.x, pos.y-1, pos.z, flower_block_id)
+  </blockquote>
+</details>
+
  - world.getBlockWithData
  - world.setBlocks
  - world.getPlayerIds
@@ -46,7 +91,7 @@ Modify config.yml:
 
 ## Libraries
 
-To use the extra features an modded version of the java and python libraries that were originally supplied by Mojang with the Pi is required, [github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi](https://github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi).  
+To use the extra features an modded version of the java and python libraries that were originally supplied by Mojang with the Pi is required, [github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi](https://github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi).
 
 You only need the modded libraries to use the extra features, the original libraries supplied with Minecraft Pi edition still work, you just wont be able to use the extra features
 
