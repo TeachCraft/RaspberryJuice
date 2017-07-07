@@ -10,22 +10,23 @@ A Bukkit plugin which implements the Minecraft Pi Socket API.
   <summary>
 mc.getBlock(x, y, z)
   </summary>
-  <pre>
+```python
+
 from mcpi import minecraft
 
-#Connect to minecraft server 127.0.0.1 as player 'steve'
+# Connect to minecraft server 127.0.0.1 as player 'steve'
 mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
 
-#Get current player's position
+# Get current player's position
 pos = mc.player.getPos()
 
-#Get the block underneath the player
+# Get the block underneath the player
 block_id_under_player = mc.getBlock(pos.x, pos.y-1, pos.z)
 grass_block_id = 2
 
 if block_id_under_player == grass_block_id:
     print "Player is standing on grass"
-  </pre>
+```
 </details>
 
 <details>
