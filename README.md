@@ -116,6 +116,7 @@ Version history:
  - 1.6 - added getPlayerId(playerName), getDirection, getRotation, getPitch
  - 1.7 - added pollChatPosts() & block update performance improvements
  - 1.8 - minecraft version 1.9.2 compatibility
+ - 1.8tc - Teachcraft version, added polling projectiles and focused on Multiplayer support
 
  https://hub.spigotmc.org/javadocs/spigot/index.html?org/bukkit/event/entity/FoodLevelChangeEvent.html
  /Users/emeth/Downloads/apache-maven-3.5.0/bin/mvn  package
