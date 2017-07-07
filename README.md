@@ -1,8 +1,9 @@
 RaspberryJuice - A Bukkit plugin which implements the Minecraft Pi Socket API.
 
 Hardcoded Settings:
-- Weather is off.
-- Hunger is off.
+- Weather is off
+- Hunger is off
+- Permanent Night Vision
 
 Features currently supported:
  - world.get/setBlock

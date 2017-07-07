@@ -84,7 +84,7 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 	@EventHandler
 	public void PlayerJoin(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
-		p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 2));
+		p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 2, true, false));
 
         PlayerInventory inventory = p.getInventory();
 
@@ -129,10 +129,10 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 	public void PlayerRespawn(PlayerRespawnEvent event) {
 		final Player p = event.getPlayer();
 
-		
+
 		getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
 			public void run() {
-				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 2));
+				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 2, true, false));
 			}
 		}, 20);
 
