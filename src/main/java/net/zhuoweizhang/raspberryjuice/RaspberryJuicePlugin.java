@@ -21,6 +21,9 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 
 
@@ -67,6 +70,13 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled=true)
+	public void weatherChange(WeatherChangeEvent event) {
+        if (event.toWeatherState()) {
+            event.setCancelled(true);
+        }
+	}
+
+	@EventHandler(ignoreCancelled=true)
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		event.setCancelled(true);
 	}
@@ -74,6 +84,7 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 	@EventHandler
 	public void PlayerJoin(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
+		p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 2));
 
         PlayerInventory inventory = p.getInventory();
 
@@ -116,7 +127,14 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void PlayerRespawn(PlayerRespawnEvent event) {
-		Player p = event.getPlayer();
+		final Player p = event.getPlayer();
+
+		
+		getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
+			public void run() {
+				p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 2));
+			}
+		}, 20);
 
         PlayerInventory inventory = p.getInventory();
 
@@ -159,7 +177,7 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 
 
 	@EventHandler
-	public void PlayerRespawn(PlayerDropItemEvent event) {
+	public void PlayerDropItem(PlayerDropItemEvent event) {
 		Player p = event.getPlayer();
 
         PlayerInventory inventory = p.getInventory();
@@ -203,6 +221,7 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 
 	@EventHandler(ignoreCancelled=true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
+
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		ItemStack currentTool = event.getPlayer().getItemInHand();
 		if (currentTool == null || !blockBreakDetectionTools.contains(currentTool.getType())) {
