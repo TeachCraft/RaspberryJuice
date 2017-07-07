@@ -1,5 +1,9 @@
 RaspberryJuice - A Bukkit plugin which implements the Minecraft Pi Socket API.
 
+Hardcoded Settings:
+- Weather is off.
+- Hunger is off.
+
 Features currently supported:
  - world.get/setBlock
  - world.getBlockWithData
@@ -51,4 +55,4 @@ Version history:
  - 1.8 - minecraft version 1.9.2 compatibility
 
  https://hub.spigotmc.org/javadocs/spigot/index.html?org/bukkit/event/entity/FoodLevelChangeEvent.html
- /Users/emeth/Downloads/apache-maven-3.5.0/bin/mvn  package 
+ /Users/emeth/Downloads/apache-maven-3.5.0/bin/mvn  package
