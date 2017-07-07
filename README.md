@@ -11,6 +11,8 @@ A Bukkit plugin which implements the Minecraft Pi Socket API.
 mc.getBlock(x, y, z)
   </summary>
 
+> Get the block at coordinates X/Y/Z, returning its block ID
+
 ```python
 
 from mcpi import minecraft
@@ -27,7 +29,7 @@ grass_block_id = 2
 
 if block_id_under_player == grass_block_id:
     print "Player is standing on grass"
-    
+
 ```
 
 </details>
@@ -36,8 +38,10 @@ if block_id_under_player == grass_block_id:
   <summary>
 mc.setBlock(x, y, z, block_id)
   </summary>
-  <blockquote>
+
 > Set the block at coordinates X/Y/Z to block_id
+
+```python
 
 from mcpi import minecraft
 
@@ -53,7 +57,9 @@ flower_block_id = 38
 
 #Set the block underneath the player to be a flower
 mc.setBlock(pos.x, pos.y-1, pos.z, flower_block_id)
-  </blockquote>
+
+```
+
 </details>
 
  - world.getBlockWithData
