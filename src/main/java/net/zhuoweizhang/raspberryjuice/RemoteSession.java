@@ -207,9 +207,9 @@ public class RemoteSession {
 
 			// events.clear
 			} else if (c.equals("events.clear")) {
-				//interactEventQueue.clear();
-				//chatPostedQueue.clear();
-				//projectileHitQueue.clear();
+				interactEventQueue.clear();
+				chatPostedQueue.clear();
+				projectileHitQueue.clear();
 
 			// events.projectile.hits
 
