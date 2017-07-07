@@ -10,7 +10,7 @@ A Bukkit plugin which implements the Minecraft Pi Socket API.
   <summary>
 mc.getBlock(x, y, z)
   </summary>
-  <blockquote>
+  <pre>
 from mcpi import minecraft
 
 #Connect to minecraft server 127.0.0.1 as player 'steve'
@@ -25,7 +25,7 @@ grass_block_id = 2
 
 if block_id_under_player == grass_block_id:
     print "Player is standing on grass"
-  </blockquote>
+  </pre>
 </details>
 
 <details>
