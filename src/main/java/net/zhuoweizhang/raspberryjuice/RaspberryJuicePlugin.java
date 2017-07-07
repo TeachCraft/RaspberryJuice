@@ -4,6 +4,10 @@ import java.net.*;
 import java.util.*;
 
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.EventHandler;
@@ -13,6 +17,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+
 
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -55,6 +64,141 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		//setup the schedule to called the tick handler
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new TickHandler(), 1, 1);
+	}
+
+	@EventHandler(ignoreCancelled=true)
+	public void onFoodLevelChange(FoodLevelChangeEvent event) {
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void PlayerJoin(PlayerJoinEvent event) {
+		Player p = event.getPlayer();
+
+        PlayerInventory inventory = p.getInventory();
+
+        if(inventory.contains(Material.GOLD_SWORD)){
+
+		}
+		else {
+			ItemStack sword = new ItemStack(Material.GOLD_SWORD);
+			ItemMeta metas = sword.getItemMeta();
+			metas.setDisplayName("TeachCraft Sword");
+			metas.addEnchant(Enchantment.DURABILITY, 1, true);
+			sword.setItemMeta(metas);
+			p.getInventory().addItem(sword);
+		}
+
+        if(inventory.contains(Material.BOW)){
+
+		}
+		else {
+			ItemStack bow = new ItemStack(Material.BOW);
+			ItemMeta meta = bow.getItemMeta();
+			meta.setDisplayName("TeachCraft Bow");
+			meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+			meta.addEnchant(Enchantment.DURABILITY, 1, true);
+			bow.setItemMeta(meta);
+			p.getInventory().addItem(bow);
+		}
+
+
+        if(inventory.contains(Material.ARROW)){
+
+		}
+		else {
+			ItemStack arrow = new ItemStack(Material.ARROW);
+			p.getInventory().addItem(arrow);
+		}
+
+
+	}
+
+	@EventHandler
+	public void PlayerRespawn(PlayerRespawnEvent event) {
+		Player p = event.getPlayer();
+
+        PlayerInventory inventory = p.getInventory();
+
+        if(inventory.contains(Material.GOLD_SWORD)){
+
+		}
+		else {
+			ItemStack sword = new ItemStack(Material.GOLD_SWORD);
+			ItemMeta metas = sword.getItemMeta();
+			metas.setDisplayName("TeachCraft Sword");
+			metas.addEnchant(Enchantment.DURABILITY, 1, true);
+			sword.setItemMeta(metas);
+			p.getInventory().addItem(sword);
+		}
+
+        if(inventory.contains(Material.BOW)){
+
+		}
+		else {
+			ItemStack bow = new ItemStack(Material.BOW);
+			ItemMeta meta = bow.getItemMeta();
+			meta.setDisplayName("TeachCraft Bow");
+			meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+			meta.addEnchant(Enchantment.DURABILITY, 1, true);
+			bow.setItemMeta(meta);
+			p.getInventory().addItem(bow);
+		}
+
+
+        if(inventory.contains(Material.ARROW)){
+
+		}
+		else {
+			ItemStack arrow = new ItemStack(Material.ARROW);
+			p.getInventory().addItem(arrow);
+		}
+
+
+	}
+
+
+	@EventHandler
+	public void PlayerRespawn(PlayerDropItemEvent event) {
+		Player p = event.getPlayer();
+
+        PlayerInventory inventory = p.getInventory();
+
+        if(inventory.contains(Material.GOLD_SWORD)){
+
+		}
+		else {
+			ItemStack sword = new ItemStack(Material.GOLD_SWORD);
+			ItemMeta metas = sword.getItemMeta();
+			metas.setDisplayName("TeachCraft Sword");
+			metas.addEnchant(Enchantment.DURABILITY, 1, true);
+			sword.setItemMeta(metas);
+			p.getInventory().addItem(sword);
+		}
+
+        if(inventory.contains(Material.BOW)){
+
+		}
+		else {
+			ItemStack bow = new ItemStack(Material.BOW);
+			ItemMeta meta = bow.getItemMeta();
+			meta.setDisplayName("TeachCraft Bow");
+			meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+			meta.addEnchant(Enchantment.DURABILITY, 1, true);
+			bow.setItemMeta(meta);
+			p.getInventory().addItem(bow);
+		}
+
+
+        if(inventory.contains(Material.ARROW)){
+
+		}
+		else {
+			ItemStack arrow = new ItemStack(Material.ARROW);
+			p.getInventory().addItem(arrow);
+		}
+
+
 	}
 
 	@EventHandler(ignoreCancelled=true)
