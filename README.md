@@ -1,12 +1,74 @@
-RaspberryJuice - A Bukkit plugin which implements the Minecraft Pi Socket API.
+# RaspberryJuice
+
+A Bukkit plugin which implements the Minecraft Pi Socket API.
 
 Hardcoded Settings:
 - Weather is off
 - Hunger is off
 - Permanent Night Vision
 
+## Commands
+
+### Commands supported
+
+<details>
+  <summary>
+mc.getBlock(x, y, z)
+  </summary>
+
+> Get the block at coordinates X/Y/Z, returning its block ID
+
+```python
+
+from mcpi import minecraft
+
+# Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+# Get current player's position
+pos = mc.player.getPos()
+
+# Get the block underneath the player
+block_id_under_player = mc.getBlock(pos.x, pos.y-1, pos.z)
+grass_block_id = 2
+
+if block_id_under_player == grass_block_id:
+    print "Player is standing on grass"
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.setBlock(x, y, z, block_id)
+  </summary>
+
+> Set the block at coordinates X/Y/Z to block_id
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+#This is the minecraft block ID of the flower block.
+#To see what other block IDs are available, go here in your browser: http://minecraft-ids.grahamedgecombe.com/
+flower_block_id = 38
+
+#Set the block underneath the player to be a flower
+mc.setBlock(pos.x, pos.y-1, pos.z, flower_block_id)
+
+```
+
+</details>
+
+
 Features currently supported:
- - world.get/setBlock
  - world.getBlockWithData
  - world.setBlocks
  - world.getPlayerIds
