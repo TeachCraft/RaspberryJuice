@@ -37,11 +37,11 @@ public class RemoteSession {
 
 	public RaspberryJuicePlugin plugin;
 
-	protected Map<Integer, ArrayDeque<PlayerInteractEvent>> interactEventMap = new HashMap<Integer, ArrayDeque<PlayerInteractEvent>>();
+	protected ArrayDeque<PlayerInteractEvent> interactEventQueue = new ArrayDeque<PlayerInteractEvent>();
 
-	protected Map<Integer, ArrayDeque<AsyncPlayerChatEvent>> chatPostedMap = new HashMap<Integer, ArrayDeque<AsyncPlayerChatEvent>>();
+	protected ArrayDeque<AsyncPlayerChatEvent> chatPostedQueue = new ArrayDeque<AsyncPlayerChatEvent>();
 
-	protected Map<Integer, ArrayDeque<ProjectileHitEvent>> projectileHitMap = new HashMap<Integer, ArrayDeque<ProjectileHitEvent>>();
+	protected ArrayDeque<ProjectileHitEvent> projectileHitQueue = new ArrayDeque<ProjectileHitEvent>();
 
 	private int maxCommandsPerTick = 9000;
 
@@ -88,27 +88,13 @@ public class RemoteSession {
 	public void queuePlayerInteractEvent(PlayerInteractEvent event) {
 		//plugin.getLogger().info(event.toString());
 
-		Integer id = event.getPlayer().getEntityId();
-
-		if (interactEventMap.containsKey(id)) {
-			interactEventMap.get(id).add(event);
-		} else {
-			interactEventMap.put(id, new ArrayDeque<PlayerInteractEvent>());
-			interactEventMap.get(id).add(event);
-		}
+		interactEventQueue.add(event);
 	}
 
 	public void queueChatPostedEvent(AsyncPlayerChatEvent event) {
 		//plugin.getLogger().info(event.toString());
 
-		Integer id = event.getPlayer().getEntityId();
-
-		if (chatPostedMap.containsKey(id)) {
-			chatPostedMap.get(id).add(event);
-		} else {
-			chatPostedMap.put(id, new ArrayDeque<AsyncPlayerChatEvent>());
-			chatPostedMap.get(id).add(event);
-		}
+		chatPostedQueue.add(event);
 	}
 
 	public void queueProjectileHitEvent(ProjectileHitEvent event) {
@@ -117,15 +103,7 @@ public class RemoteSession {
 		Arrow arrow = (Arrow) event.getEntity();
 		if (arrow.getShooter() instanceof Player) {
 
-			Player shooter = (Player) arrow.getShooter();
-			Integer id = shooter.getEntityId();
-
-			if (projectileHitMap.containsKey(id)) {
-				projectileHitMap.get(id).add(event);
-			} else {
-				projectileHitMap.put(id, new ArrayDeque<ProjectileHitEvent>());
-				projectileHitMap.get(id).add(event);
-			}
+			projectileHitQueue.add(event);
 		}
 	}
 
@@ -243,24 +221,21 @@ public class RemoteSession {
 				Player currentPlayer = getCurrentPlayer(name);
 				Integer playerID = currentPlayer.getEntityId();
 
-				if (projectileHitMap.containsKey(playerID)) {
-
-				} else {
-					projectileHitMap.put(playerID, new ArrayDeque<ProjectileHitEvent>());
-				}
 				StringBuilder b = new StringBuilder();
 		 		ProjectileHitEvent event;
-				while ((event = projectileHitMap.get(playerID).poll()) != null) {
+				while ((event = projectileHitQueue.poll()) != null) {
 					Arrow arrow = (Arrow) event.getEntity();
 					Player shooter = (Player) arrow.getShooter();
-					Block block = arrow.getLocation().getBlock();
-					Location loc = block.getLocation();
-					b.append(blockLocationToRelative(loc));
-					b.append(",");
-					b.append(1); //blockFaceToNotch(event.getBlockFace()), but don't really care
-					b.append(",");
-					b.append(shooter.getEntityId());
-					if (projectileHitMap.get(playerID).size() > 0) {
+					if (shooter.getEntityId() == playerID) {
+						Block block = arrow.getLocation().getBlock();
+						Location loc = block.getLocation();
+						b.append(blockLocationToRelative(loc));
+						b.append(",");
+						b.append(1); //blockFaceToNotch(event.getBlockFace()), but don't really care
+						b.append(",");
+						b.append(shooter.getEntityId());
+					}
+					if (projectileHitQueue.size() > 0) {
 						b.append("|");
 					}
 					arrow.remove();
@@ -278,23 +253,19 @@ public class RemoteSession {
 				Player currentPlayer = getCurrentPlayer(name);
 				Integer playerID = currentPlayer.getEntityId();
 
-				if (interactEventMap.containsKey(playerID)) {
-
-				} else {
-					interactEventMap.put(playerID, new ArrayDeque<PlayerInteractEvent>());
-				}
-
 				StringBuilder b = new StringBuilder();
 		 		PlayerInteractEvent event;
-				while ((event = interactEventMap.get(playerID).poll()) != null) {
-					Block block = event.getClickedBlock();
-					Location loc = block.getLocation();
-					b.append(blockLocationToRelative(loc));
-					b.append(",");
-					b.append(blockFaceToNotch(event.getBlockFace()));
-					b.append(",");
-					b.append(event.getPlayer().getEntityId());
-					if (interactEventMap.get(playerID).size() > 0) {
+				while ((event = interactEventQueue.poll()) != null) {
+					if (event.getPlayer().getEntityId() == playerID) {
+						Block block = event.getClickedBlock();
+						Location loc = block.getLocation();
+						b.append(blockLocationToRelative(loc));
+						b.append(",");
+						b.append(blockFaceToNotch(event.getBlockFace()));
+						b.append(",");
+						b.append(event.getPlayer().getEntityId());
+					}
+					if (interactEventQueue.size() > 0) {
 						b.append("|");
 					}
 				}
@@ -311,19 +282,15 @@ public class RemoteSession {
 				Player currentPlayer = getCurrentPlayer(name);
 				Integer playerID = currentPlayer.getEntityId();
 
-				if (chatPostedMap.containsKey(playerID)) {
-
-				} else {
-					chatPostedMap.put(playerID, new ArrayDeque<AsyncPlayerChatEvent>());
-				}
-
 				StringBuilder b = new StringBuilder();
 				AsyncPlayerChatEvent event;
-				while ((event = chatPostedMap.get(playerID).poll()) != null) {
-					b.append(event.getPlayer().getEntityId());
-					b.append(",");
-					b.append(event.getMessage());
-					if (chatPostedMap.get(playerID).size() > 0) {
+				while ((event = chatPostedQueue.poll()) != null) {
+					if (event.getPlayer().getEntityId() == playerID) {
+						b.append(event.getPlayer().getEntityId());
+						b.append(",");
+						b.append(event.getMessage());
+					}
+					if (chatPostedQueue.size() > 0) {
 						b.append("|");
 					}
 				}
