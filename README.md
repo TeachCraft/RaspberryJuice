@@ -217,10 +217,10 @@ mc.player.setPos(pos.x, pos.y+100, pos.z)
 
 <details>
   <summary>
-mc.player.getPos()
+mc.player.getTilePos()
   </summary>
 
-> Get current player's position exactly (decimals)
+> Get current player's position rounded to the block (integer)
 
 ```python
 
@@ -230,9 +230,9 @@ from mcpi import minecraft
 mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
 
 #Get current player's position
-pos = mc.player.getPos()
+pos = mc.player.getTilePos()
 
-# Returns Vec3(18.3814903971,6.0,25.6063951368)
+# Returns Vec3(52, 4, -10)
 # Can be accessed as pos.x, pos.y, and pos.z
 print pos.x, pos.y, pos.z
 
@@ -243,10 +243,10 @@ print pos.x, pos.y, pos.z
 
 <details>
   <summary>
-mc.player.setPos()
+mc.player.setTilePos()
   </summary>
 
-> Set current player's position exactly (supports decimals)
+> Set current player's position rounded to the block (supports integers)
 
 ```python
 
@@ -256,39 +256,69 @@ from mcpi import minecraft
 mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
 
 #Get current player's position
-pos = mc.player.getPos()
+pos = mc.player.getTilePos()
 
 #Set current player's position 100 blocks in the air
-mc.player.setPos(pos.x, pos.y+100, pos.z)
+mc.player.setTilePos(pos.x, pos.y+100, pos.z)
 
 ```
 
 </details>
 
- - chat.post
- - events.clear
- - events.block.hits
- - player.getTile
- - player.setTile
- - player.getPos
- - player.setPos
- - world.getHeight
- - entity.getTile
- - entity.setTile
 
-Features that can't be supported:
- - Camera angles
+<details>
+  <summary>
+mc.getHeight(x, z)
+  </summary>
+
+> Given an x/z coordinate, find the highest non-air block (y coordinate)
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's position
+pos = mc.player.getTilePos()
+
+highest_block_y_coordinate = mc.getHeight(pos.x, pos.y)
+print highest_block_y_coordinate
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.postToChat("Hello World!")
+  </summary>
+
+> Post any text string to chat in-game
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+mc.postToChat("Hello World!")
+
+```
+
+</details>
+
+ - events.block.hits
+ - events.clear
+
 
 Extra features(**):
  - getBlocks(x1,y1,z1,x2,y2,z2) has been implemented
  - getDirection, getRotation, getPitch functions - get the 'direction' players and entities are facing
  - getPlayerId(playerName) - get the entity of a player by name
  - pollChatPosts() - get events back for posts to the chat
- - multiplayer support
-   - name added as an option parameter to player calls
-   - modded minecraft.py in python api library so player "name" can be passed on Minecraft.create(ip, port, name)
-   - this change does not stop standard python api library being used
- - the default tcp port can be changed in config.yml
 
 ** to use the extra features an modded version of the java and python libraries that were originally supplied by Mojang with the Pi is required, https://github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi.  You only need the modded libraries to use the extra features, the original libraries still work, you just wont be able to use the extra features
 
