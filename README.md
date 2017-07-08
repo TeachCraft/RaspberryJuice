@@ -138,8 +138,133 @@ mc.setBlocks(pos.x-2, pos.y+1, pos.z-1, pos.x-7, pos.y+4, pos.z-4, air_block_id)
 </details>
 
 
- - world.getPlayerIds
- - world.getBlocks
+<details>
+  <summary>
+mc.getBlocks(x1, y1, z1, x2, y2, z2)
+  </summary>
+
+> Get a cuboid of blocks between two opposite corners (x1/y1/z1 and x2/y2/z2)
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+blocks = mc.getBlocks(pos.x+3, pos.y, pos.z, pos.x+8, pos.y+5, pos.z+5)
+for block_id in blocks:
+    print block_id
+
+
+```
+
+</details>
+
+
+<details>
+  <summary>
+mc.player.getPos()
+  </summary>
+
+> Get current player's position exactly (decimals)
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+# Returns Vec3(18.3814903971,6.0,25.6063951368)
+# Can be accessed as pos.x, pos.y, and pos.z
+print pos.x, pos.y, pos.z
+
+```
+
+</details>
+
+
+<details>
+  <summary>
+mc.player.setPos()
+  </summary>
+
+> Set current player's position exactly (supports decimals)
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+#Set current player's position 100 blocks in the air
+mc.player.setPos(pos.x, pos.y+100, pos.z)
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.player.getPos()
+  </summary>
+
+> Get current player's position exactly (decimals)
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+# Returns Vec3(18.3814903971,6.0,25.6063951368)
+# Can be accessed as pos.x, pos.y, and pos.z
+print pos.x, pos.y, pos.z
+
+```
+
+</details>
+
+
+<details>
+  <summary>
+mc.player.setPos()
+  </summary>
+
+> Set current player's position exactly (supports decimals)
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+#Set current player's position 100 blocks in the air
+mc.player.setPos(pos.x, pos.y+100, pos.z)
+
+```
+
+</details>
+
  - chat.post
  - events.clear
  - events.block.hits
@@ -150,8 +275,6 @@ mc.setBlocks(pos.x-2, pos.y+1, pos.z-1, pos.x-7, pos.y+4, pos.z-4, air_block_id)
  - world.getHeight
  - entity.getTile
  - entity.setTile
- - entity.getPos
- - entity.setPos
 
 Features that can't be supported:
  - Camera angles
