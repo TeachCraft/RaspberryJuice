@@ -15,6 +15,28 @@ Click a function name to see an example.
 
 <details>
   <summary>
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+  </summary>
+
+> Connect to a minecraft world
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+#Get current player's position
+pos = mc.player.getPos()
+print pos.x, pos.y, pos.z
+
+```
+
+</details>
+
+<details>
+  <summary>
 mc.setBlock(x, y, z, block_id, [block_data])
   </summary>
 
