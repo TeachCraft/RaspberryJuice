@@ -7,9 +7,9 @@ Hardcoded Settings:
 - Hunger is off
 - Permanent Night Vision
 
-## Commands
+## Python API
 
-### Commands supported
+These are the functions are exposed via this mod. To use these functions, you'll need the Python API, which is available in <a href='https://github.com/TeachCraft/TeachCraft-Examples'>TeachCraft-Examples repository</a>
 
 <details>
   <summary>
@@ -498,30 +498,9 @@ print rotation
 </details>
 
 
+- More details available <a href='http://www.stuffaboutcode.com/p/minecraft-api-reference.html'>here</a>
 
-
-
-Extra features(**):
- - getBlocks(x1,y1,z1,x2,y2,z2) has been implemented
- - getDirection, getRotation, getPitch functions - get the 'direction' players and entities are facing
-
-** to use the extra features an modded version of the java and python libraries that were originally supplied by Mojang with the Pi is required, https://github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi.  You only need the modded libraries to use the extra features, the original libraries still work, you just wont be able to use the extra features
-
-** please note extra features are NOT guaranteed to be maintained in future releases, particularly if updates are made to the original Pi API which replace the functionality
-
-
-Version history:
- - 1.1 - Initial release
- - 1.1.1 - block hit events
- - 1.2 - added world.getBlockWithData
- - 1.3 - getHeight, multiplayer, getBlocks
- - 1.4 - bug fixes, port specified in config.yml
- - 1.4.2 - bug fixes
- - 1.5 - entity functions
- - 1.6 - added getPlayerId(playerName), getDirection, getRotation, getPitch
- - 1.7 - added pollChatPosts() & block update performance improvements
- - 1.8 - minecraft version 1.9.2 compatibility
- - 1.8tc - Teachcraft version, added polling projectiles and focused on Multiplayer support
+-------------------------------------
 
  https://hub.spigotmc.org/javadocs/spigot/index.html?org/bukkit/event/entity/FoodLevelChangeEvent.html
  /Users/emeth/Downloads/apache-maven-3.5.0/bin/mvn  package
