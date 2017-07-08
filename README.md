@@ -310,15 +310,125 @@ mc.postToChat("Hello World!")
 
 </details>
 
- - events.block.hits
+
+<details>
+  <summary>
+mc.player.pollBlockHits()
+  </summary>
+
+> Perform an action wherever the player right clicks with a sword
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+while True:
+
+    for blockhit in mc.player.pollBlockHits():
+
+        #Get coordinates for block that player right clicked with sword
+        pos = blockhit.pos
+
+        #Clear out a cube of blocks at that location
+        air_block_id = 0
+        mc.setBlocks(pos.x+2, pos.y+2, pos.z+2, pos.x-2, pos.y-2, pos.z-2, air_block_id)
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.player.pollProjectileHits()
+  </summary>
+
+> Perform an action wherever the player shoots with an arrow
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+while True:
+
+    for blockhit in mc.player.pollProjectileHits():
+
+        #Get coordinates for block that player shot with an arrow
+        pos = blockhit.pos
+
+        #Teleport player to where arrow landed
+        mc.player.setPos(pos.x, pos.y, pos.z)
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.player.pollChatPosts()
+  </summary>
+
+> Perform an action whenever the player types something in chat
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+while True:
+
+    for chatpost in mc.player.pollChatPosts():
+
+        #If I type explode into chat...
+        if chatpost.message.lower() == "explode":
+
+            #Get my position
+            pos = mc.player.getPos()
+
+            #Put TNT at my position
+            mc.setBlock(pos.x, pos.y, pos.z, 46)
+
+            #And put a redstone block under the TNT to activate it
+            mc.setBlock(pos.x, pos.y-1, pos.z, 152)
+
+```
+
+</details>
+
+
+<details>
+  <summary>
+mc.events.clearAll()
+  </summary>
+
+> Clear all events that have happened since the events where last retrieved
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+mc.events.clearAll()
+
+```
+
+</details>
+
  - events.clear
 
 
 Extra features(**):
  - getBlocks(x1,y1,z1,x2,y2,z2) has been implemented
  - getDirection, getRotation, getPitch functions - get the 'direction' players and entities are facing
- - getPlayerId(playerName) - get the entity of a player by name
- - pollChatPosts() - get events back for posts to the chat
 
 ** to use the extra features an modded version of the java and python libraries that were originally supplied by Mojang with the Pi is required, https://github.com/zhuowei/RaspberryJuice/tree/master/src/main/resources/mcpi.  You only need the modded libraries to use the extra features, the original libraries still work, you just wont be able to use the extra features
 
