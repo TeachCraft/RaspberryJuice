@@ -13,6 +13,39 @@ Hardcoded Settings:
 
 <details>
   <summary>
+mc.setBlock(x, y, z, block_id, [block_data])
+  </summary>
+
+> Set the block at coordinates X/Y/Z to block_id
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+#Get current player's position
+pos = mc.player.getPos()
+
+#This is the minecraft block ID of the glass block.
+#To see what other block IDs are available, go here in your browser: http://minecraft-ids.grahamedgecombe.com/
+glass_block_id = 20
+
+#Set the block underneath the player to be glass
+mc.setBlock(pos.x, pos.y-1, pos.z, glass_block_id)
+
+#Set the block to the side of player to be wood of a specific subtype
+wood_block_id = 5
+wood_data = 1 #subtype
+mc.setBlock(pos.x+1, pos.y, pos.z, wood_block_id, wood_data)
+
+```
+
+</details>
+
+<details>
+  <summary>
 mc.getBlock(x, y, z)
   </summary>
 
@@ -39,12 +72,41 @@ if block_id_under_player == grass_block_id:
 
 </details>
 
+
+
 <details>
   <summary>
-mc.setBlock(x, y, z, block_id)
+mc.getBlockWithData(x, y, z)
   </summary>
 
-> Set the block at coordinates X/Y/Z to block_id
+> Get the block at coordinates X/Y/Z, returning its block ID & data field (e.g. for wool color)
+
+```python
+
+from mcpi import minecraft
+
+# Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
+
+# Get current player's position
+pos = mc.player.getPos()
+
+# Get the block underneath the player
+block_under_player = mc.getBlockWithData(pos.x, pos.y-1, pos.z)
+print "block id", block_under_player.id
+print "block data", block_under_player.data
+
+```
+
+</details>
+
+
+<details>
+  <summary>
+mc.setBlocks(x1, y1, z1, x2, y2, z2, block_id, [block_data])
+  </summary>
+
+> Set a cuboid of blocks between two opposite corners (x1/y1/z1 and x2/y2/z2)
 
 ```python
 
@@ -56,21 +118,26 @@ mc = minecraft.Minecraft.create(address="127.0.0.1", name="steve")
 #Get current player's position
 pos = mc.player.getPos()
 
-#This is the minecraft block ID of the flower block.
+#This is the minecraft block ID of the glass block.
 #To see what other block IDs are available, go here in your browser: http://minecraft-ids.grahamedgecombe.com/
-flower_block_id = 38
+glass_block_id = 20
 
-#Set the block underneath the player to be a flower
-mc.setBlock(pos.x, pos.y-1, pos.z, flower_block_id)
+#Build a glass cube next to the player
+mc.setBlocks(pos.x+3, pos.y, pos.z, pos.x+8, pos.y+5, pos.z+5, glass_block_id)
+
+#Build a wood cube of a specific subtype next to the player, then make it hollow by building a smaller cube of air inside
+wood_block_id = 5
+wood_data = 1 #subtype
+mc.setBlocks(pos.x-3, pos.y, pos.z, pos.x-8, pos.y+5, pos.z-5, wood_block_id, wood_data)
+
+air_block_id = 0
+mc.setBlocks(pos.x-2, pos.y+1, pos.z-1, pos.x-7, pos.y+4, pos.z-4, air_block_id)
 
 ```
 
 </details>
 
 
-Features currently supported:
- - world.getBlockWithData
- - world.setBlocks
  - world.getPlayerIds
  - world.getBlocks
  - chat.post
