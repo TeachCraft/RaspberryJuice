@@ -501,3 +501,12 @@ print rotation
 
 
 More details available <a href='http://www.stuffaboutcode.com/p/minecraft-api-reference.html'>here</a>
+
+## Compile
+
+- Download <a href='https://maven.apache.org/download.cgi'>Maven</a>
+- After extracting it, `cd` to the directory this repository is downloaded to, and run the binary from the package you downloaded above like so:
+
+```
+cd ~/Desktop/RaspberryJuice && /Users/emeth/Downloads/apache-maven-3.5.0/bin/mvn  package
+```
