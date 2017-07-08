@@ -423,7 +423,82 @@ mc.events.clearAll()
 
 </details>
 
- - events.clear
+
+<details>
+  <summary>
+mc.player.getDirection()
+  </summary>
+
+> Get unit vector of x,y,z for the player's direction
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's direction
+direction = mc.player.getDirection()
+
+# Returns Vec3(-0.935271308082,-0.271442436324,-0.227126801679)
+# Can be accessed as direction.x, direction.y, and direction.z
+print direction.x, direction.y, direction.z
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.player.getPitch()
+  </summary>
+
+> Get the pitch angle (-90 to 90) for the player
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's pitch
+pitch = mc.player.getPitch()
+
+# Returns 15.750118 (or something like that)
+print pitch
+
+```
+
+</details>
+
+<details>
+  <summary>
+mc.player.getRotation()
+  </summary>
+
+> Get the rotational angle (0 to 360) for the player
+
+```python
+
+from mcpi import minecraft
+
+#Connect to minecraft server 127.0.0.1 as player 'steve'
+mc = minecraft.Minecraft.create(address="127.0.0.1", name="bob")
+
+#Get current player's rotation
+rotation = mc.player.getRotation()
+
+# Returns -256.3502 (or something like that)
+print rotation
+
+```
+
+</details>
+
+
+
 
 
 Extra features(**):
