@@ -9,7 +9,9 @@ Hardcoded Settings:
 
 ## Python API
 
-These are the functions are exposed via this mod. To use these functions, you'll need the Python API, which is available in <a href='https://github.com/TeachCraft/TeachCraft-Examples'>TeachCraft-Examples repository</a>
+These are the functions are exposed via this mod. To use these functions, you'll need the Python API, which is available in <a href='https://github.com/TeachCraft/TeachCraft-Examples'>TeachCraft-Examples repository</a>.
+
+Click a function name to see an example.
 
 <details>
   <summary>
@@ -498,9 +500,4 @@ print rotation
 </details>
 
 
-- More details available <a href='http://www.stuffaboutcode.com/p/minecraft-api-reference.html'>here</a>
-
--------------------------------------
-
- https://hub.spigotmc.org/javadocs/spigot/index.html?org/bukkit/event/entity/FoodLevelChangeEvent.html
- /Users/emeth/Downloads/apache-maven-3.5.0/bin/mvn  package
+More details available <a href='http://www.stuffaboutcode.com/p/minecraft-api-reference.html'>here</a>
