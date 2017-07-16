@@ -24,6 +24,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 
 
@@ -79,6 +81,14 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 	@EventHandler(ignoreCancelled=true)
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		event.setCancelled(true);
+	}
+
+	@EventHandler(ignoreCancelled = true)
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event.getCause().equals(DamageCause.LAVA))
+		{
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler
