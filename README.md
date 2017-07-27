@@ -6,6 +6,7 @@ Hardcoded Settings:
 - Weather is off
 - Hunger is off
 - Permanent Night Vision
+- Lava damage reduced (but not eliminated)
 
 ## Python API
 
